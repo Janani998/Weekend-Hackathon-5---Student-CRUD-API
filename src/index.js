@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // your code goes here
 const students = require("./InitialData");
+let arrayLength = students.length;
 app.get("/api/student", (req, res) => {
   res.send(students);
 });
@@ -40,11 +41,12 @@ app.post("/api/student", (req, res) => {
     return;
   }
   const student = {
-    id: students.length + 1,
+    id: arrayLength + 1,
     name: requestBody.name,
     currentClass: requestBody.currentClass,
     division: requestBody.division
   };
+  arrayLength = student.id;
   students.push(student);
   res.send({ id: student.id });
 });
