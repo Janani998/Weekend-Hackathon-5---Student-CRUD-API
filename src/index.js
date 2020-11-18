@@ -37,7 +37,7 @@ app.post("/api/student", (req, res) => {
   const requestBody = req.body;
   const validateObj = schema.validate(requestBody, { convert: false });
   if (validateObj.error) {
-    res.status(400).send("Data sent is incomplete");
+    res.status(400).send();
     return;
   }
   const student = {
@@ -57,17 +57,36 @@ app.put("/api/student/:id", (req, res) => {
     (student) => student.id === parseInt(id)
   );
   if (requestedStudentIndex === -1) {
-    res.status(404).send("Invalid id");
+    res.status(404).send();
     return;
   }
   const requestBody = req.body;
   const requestedStudent = students[requestedStudentIndex];
-  if (!requestedStudent.name || requestBody.name === "") {
-    res.status(400).send("Data sent is incomplete");
-    return;
+  if (requestBody.name) {
+    if (requestBody.name === "") {
+      res.status(400).send();
+      return;
+    } else {
+      requestedStudent.name = requestBody.name;
+    }
   }
-  requestedStudent.name = requestBody.name;
-  res.send(requestedStudent);
+  if (requestBody.currentClass) {
+    if (requestBody.currentClass === "") {
+      res.status(400).send();
+      return;
+    } else {
+      requestedStudent.currentClass = parseInt(requestBody.currentClass);
+    }
+  }
+  if (requestBody.division) {
+    if (requestBody.division === "" || requestBody.division.length > 1) {
+      res.status(400).send();
+      return;
+    } else {
+      requestedStudent.division = requestBody.division;
+    }
+  }
+  students.splice(requestedStudentIndex, 1, requestedStudent);
 });
 
 app.delete("/api/student/:id", (req, res) => {
@@ -76,7 +95,7 @@ app.delete("/api/student/:id", (req, res) => {
     (student) => student.id === parseInt(id)
   );
   if (requestedStudentIndex === -1) {
-    res.status(404).send("Invalid id");
+    res.status(404).send();
     return;
   }
   const requestedStudent = students[requestedStudentIndex];
