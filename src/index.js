@@ -48,7 +48,8 @@ app.post("/api/student", (req, res) => {
   };
   arrayLength = student.id;
   students.push(student);
-  res.send({ id: student.id });
+  const responseId = JSON.stringify({ id: student.id });
+  res.send(responseId);
 });
 
 app.put("/api/student/:id", (req, res) => {
@@ -75,7 +76,8 @@ app.put("/api/student/:id", (req, res) => {
       res.status(400).send();
       return;
     } else {
-      requestedStudent.currentClass = parseInt(requestBody.currentClass);
+      const updatedCurrentClass = requestBody.currentClass;
+      requestedStudent.currentClass = parseInt(updatedCurrentClass);
     }
   }
   if (requestBody.division) {
@@ -87,6 +89,7 @@ app.put("/api/student/:id", (req, res) => {
     }
   }
   students.splice(requestedStudentIndex, 1, requestedStudent);
+  // res.send(requestedStudent);
 });
 
 app.delete("/api/student/:id", (req, res) => {
@@ -95,7 +98,7 @@ app.delete("/api/student/:id", (req, res) => {
     (student) => student.id === parseInt(id)
   );
   if (requestedStudentIndex === -1) {
-    res.status(404).send();
+    res.status(404);
     return;
   }
   const requestedStudent = students[requestedStudentIndex];
