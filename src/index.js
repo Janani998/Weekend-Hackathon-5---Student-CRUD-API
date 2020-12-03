@@ -49,19 +49,24 @@ app.post("/api/student", (req, res) => {
     currentClass: parseInt(requestBody.currentClass),
     division: requestBody.division
   };
-  arrayLength = student.id;
+  arrayLength++;
   students.push(student);
-  const responseId = JSON.stringify({ id: student.id });
-  res.send(responseId);
+  //   const responseId = JSON.stringify({ id: student.id });
+  //   res.send(responseId);
+  res.send({ id: student.id });
 });
 
 app.put("/api/student/:id", (req, res) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    res.sendStatus(400);
+    return;
+  }
   const requestedStudentIndex = students.findIndex(
-    (student) => student.id === parseInt(id)
+    (student) => student.id === id
   );
   if (requestedStudentIndex === -1) {
-    res.sendStatus(404);
+    res.sendStatus(400);
     return;
   }
   const requestBody = req.body;
