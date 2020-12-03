@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-// const Joi = require('joi');
 const port = 8080;
 app.use(express.urlencoded());
 
@@ -41,8 +40,6 @@ app.post("/api/student", (req, res) => {
   };
   arrayLength++;
   students.push(student);
-  //   const responseId = JSON.stringify({ id: student.id });
-  //   res.send(responseId);
   res.send({ id: student.id });
 });
 
@@ -60,7 +57,6 @@ app.put("/api/student/:id", (req, res) => {
     return;
   }
   const requestBody = req.body;
-  const requestedStudent = students[requestedStudentIndex];
   if (requestBody.name) {
     students[requestedStudentIndex].name = requestBody.name;
   }
@@ -70,35 +66,8 @@ app.put("/api/student/:id", (req, res) => {
     );
   }
   if (requestBody.division) {
-    students[requestedStudentIndex].division = parseInt(requestBody.division);
+    students[requestedStudentIndex].division = requestBody.division;
   }
-  //   if (requestBody.name) {
-  //     if (requestBody.name === "") {
-  //       res.sendStatus(400);
-  //       return;
-  //     } else {
-  //       requestedStudent.name = requestBody.name;
-  //     }
-  //   }
-  //   if (requestBody.currentClass) {
-  //     if (requestBody.currentClass === "" || isNaN(requestBody.currentClass)) {
-  //       res.sendStatus(400);
-  //       return;
-  //     } else {
-  //       const updatedCurrentClass = requestBody.currentClass;
-  //       requestedStudent.currentClass = parseInt(updatedCurrentClass);
-  //     }
-  //   }
-  //   if (requestBody.division) {
-  //     if (requestBody.division === "" || requestBody.division.length > 1) {
-  //       res.sendStatus(400);
-  //       return;
-  //     } else {
-  //       requestedStudent.division = requestBody.division;
-  //     }
-  //   }
-  //   students.splice(requestedStudentIndex, 1, requestedStudent);
-  res.send(requestedStudent);
 });
 
 app.delete("/api/student/:id", (req, res) => {
