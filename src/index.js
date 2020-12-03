@@ -57,6 +57,8 @@ app.put("/api/student/:id", (req, res) => {
     return;
   }
   const requestBody = req.body;
+
+  const requestedStudent = students[requestedStudentIndex];
   if (requestBody.name) {
     students[requestedStudentIndex].name = requestBody.name;
   }
@@ -68,6 +70,7 @@ app.put("/api/student/:id", (req, res) => {
   if (requestBody.division) {
     students[requestedStudentIndex].division = requestBody.division;
   }
+  res.send(requestedStudent);
 });
 
 app.delete("/api/student/:id", (req, res) => {
