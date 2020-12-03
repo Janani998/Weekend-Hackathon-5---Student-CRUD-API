@@ -80,7 +80,7 @@ app.put("/api/student/:id", (req, res) => {
     }
   }
   if (requestBody.currentClass) {
-    if (requestBody.currentClass === "") {
+    if (requestBody.currentClass === "" || !isNaN(requestBody.currentClass)) {
       res.sendStatus(400);
       return;
     } else {
