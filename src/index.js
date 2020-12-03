@@ -106,7 +106,7 @@ app.delete("/api/student/:id", (req, res) => {
   }
   const requestedStudent = students[requestedStudentIndex];
   students.splice(requestedStudentIndex, 1);
-  // res.send(requestedStudent);
+  res.sendStatus(200);
 });
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
