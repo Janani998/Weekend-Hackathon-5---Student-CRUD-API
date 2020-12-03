@@ -28,18 +28,8 @@ app.get("/api/student/:id", (req, res) => {
   res.send(students[requestedStudentIndex]);
 });
 
-// const schema = Joi.object({
-//    name : Joi.string().required(),
-//    currentClass : Joi.number().required(),
-//    division : Joi.string().required()
-// })
 app.post("/api/student", (req, res) => {
   const requestBody = req.body;
-  // const validateObj = schema.validate(requestBody,{ convert: false });
-  // if(validateObj.error){
-  //     res.status(400).send();
-  //     return;
-  // }
   if (!requestBody.name || !requestBody.currentClass || !requestBody.division) {
     res.sendStatus(400);
   }
@@ -72,32 +62,43 @@ app.put("/api/student/:id", (req, res) => {
   const requestBody = req.body;
   const requestedStudent = students[requestedStudentIndex];
   if (requestBody.name) {
-    if (requestBody.name === "") {
-      res.sendStatus(400);
-      return;
-    } else {
-      requestedStudent.name = requestBody.name;
-    }
+    students[requestedStudentIndex].name = requestBody.name;
   }
   if (requestBody.currentClass) {
-    if (requestBody.currentClass === "" || !isNaN(requestBody.currentClass)) {
-      res.sendStatus(400);
-      return;
-    } else {
-      const updatedCurrentClass = requestBody.currentClass;
-      requestedStudent.currentClass = parseInt(updatedCurrentClass);
-    }
+    students[requestedStudentIndex].currentClass = parseInt(
+      requestBody.currentClass
+    );
   }
   if (requestBody.division) {
-    if (requestBody.division === "" || requestBody.division.length > 1) {
-      res.sendStatus(400);
-      return;
-    } else {
-      requestedStudent.division = requestBody.division;
-    }
+    students[requestedStudentIndex].division = parseInt(requestBody.division);
   }
-  students.splice(requestedStudentIndex, 1, requestedStudent);
-  // res.send(requestedStudent);
+  //   if (requestBody.name) {
+  //     if (requestBody.name === "") {
+  //       res.sendStatus(400);
+  //       return;
+  //     } else {
+  //       requestedStudent.name = requestBody.name;
+  //     }
+  //   }
+  //   if (requestBody.currentClass) {
+  //     if (requestBody.currentClass === "" || isNaN(requestBody.currentClass)) {
+  //       res.sendStatus(400);
+  //       return;
+  //     } else {
+  //       const updatedCurrentClass = requestBody.currentClass;
+  //       requestedStudent.currentClass = parseInt(updatedCurrentClass);
+  //     }
+  //   }
+  //   if (requestBody.division) {
+  //     if (requestBody.division === "" || requestBody.division.length > 1) {
+  //       res.sendStatus(400);
+  //       return;
+  //     } else {
+  //       requestedStudent.division = requestBody.division;
+  //     }
+  //   }
+  //   students.splice(requestedStudentIndex, 1, requestedStudent);
+  res.send(requestedStudent);
 });
 
 app.delete("/api/student/:id", (req, res) => {
