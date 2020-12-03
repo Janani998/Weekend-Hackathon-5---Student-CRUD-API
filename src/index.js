@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const Joi = require("joi");
+// const Joi = require('joi');
 const port = 8080;
 app.use(express.urlencoded());
 
@@ -28,22 +28,25 @@ app.get("/api/student/:id", (req, res) => {
   res.send(students[requestedStudentIndex]);
 });
 
-const schema = Joi.object({
-  name: Joi.string().required(),
-  currentClass: Joi.number().required(),
-  division: Joi.string().required()
-});
+// const schema = Joi.object({
+//    name : Joi.string().required(),
+//    currentClass : Joi.number().required(),
+//    division : Joi.string().required()
+// })
 app.post("/api/student", (req, res) => {
   const requestBody = req.body;
-  const validateObj = schema.validate(requestBody, { convert: false });
-  if (validateObj.error) {
-    res.status(400).send();
-    return;
+  // const validateObj = schema.validate(requestBody,{ convert: false });
+  // if(validateObj.error){
+  //     res.status(400).send();
+  //     return;
+  // }
+  if (!requestBody.name || !requestBody.currentClass || !requestBody.division) {
+    res.sendStatus(400);
   }
   const student = {
     id: arrayLength + 1,
     name: requestBody.name,
-    currentClass: requestBody.currentClass,
+    currentClass: parseInt(requestBody.currentClass),
     division: requestBody.division
   };
   arrayLength = student.id;
@@ -58,7 +61,7 @@ app.put("/api/student/:id", (req, res) => {
     (student) => student.id === parseInt(id)
   );
   if (requestedStudentIndex === -1) {
-    res.status(404).send();
+    res.sendStatus(404);
     return;
   }
   const requestBody = req.body;
@@ -98,12 +101,12 @@ app.delete("/api/student/:id", (req, res) => {
     (student) => student.id === parseInt(id)
   );
   if (requestedStudentIndex === -1) {
-    res.status(404);
+    res.status(404).send();
     return;
   }
   const requestedStudent = students[requestedStudentIndex];
   students.splice(requestedStudentIndex, 1);
-  res.send(requestedStudent);
+  // res.send(requestedStudent);
 });
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 
